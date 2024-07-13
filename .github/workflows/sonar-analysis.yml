@@ -37,5 +37,5 @@ jobs:
           /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner \
             -Dsonar.projectKey=tictactoe \
             -Dsonar.sources=. \
-            -Dsonar.host.url=http://localhost:8081 \
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
