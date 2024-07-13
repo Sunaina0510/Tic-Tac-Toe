@@ -28,14 +28,21 @@ jobs:
           server-password: ${{ secrets.GITHUB_TOKEN }}
           overwrite-settings: true
 
-      - name: SonarQube Scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  testConnectivity:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test connectivity to SonarQube
         run: |
-          curl -sSLo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-          unzip -o /tmp/sonar-scanner-cli.zip -d /tmp
-          /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner \
-            -Dsonar.projectKey=tictactoe \
-            -Dsonar.sources=. \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          curl -v ${{ secrets.SONAR_HOST_URL }}
+
+      # - name: SonarQube Scan
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   run: |
+      #     curl -sSLo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
+      #     unzip -o /tmp/sonar-scanner-cli.zip -d /tmp
+      #     /tmp/sonar-scanner-4.6.2.2472-linux/bin/sonar-scanner \
+      #       -Dsonar.projectKey=tictactoe \
+      #       -Dsonar.sources=. \
+      #       -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
+      #       -Dsonar.login=${{ secrets.SONAR_TOKEN }}
