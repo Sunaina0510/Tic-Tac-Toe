@@ -9,31 +9,46 @@ on:
       - main
 
 jobs:
-  sonarQube:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up JDK 11
-        uses: actions/setup-java@v2
+    sonarqube:
+      name: SonarQube Integration
+      runs-on: ubuntu-latest
+      
+      steps:
+      - uses: actions/checkout@v2
         with:
-          distribution: 'temurin' # Specify the Java distribution here
-          java-version: 11
-          java-package: jdk
-          architecture: x64
-          check-latest: false
-          server-id: github
-          server-username: ${{ secrets.GITHUB_ACTOR }}
-          server-password: ${{ secrets.GITHUB_TOKEN }}
-          overwrite-settings: true
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} //Sonar Token generated 
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} 
+  
+  # sonarQube:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-  testConnectivity:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test connectivity to SonarQube
-        run: |
-          curl -v ${{ secrets.SONAR_HOST_URL }}
+  #     - name: Set up JDK 11
+  #       uses: actions/setup-java@v2
+  #       with:
+  #         distribution: 'temurin' # Specify the Java distribution here
+  #         java-version: 11
+  #         java-package: jdk
+  #         architecture: x64
+  #         check-latest: false
+  #         server-id: github
+  #         server-username: ${{ secrets.GITHUB_ACTOR }}
+  #         server-password: ${{ secrets.GITHUB_TOKEN }}
+  #         overwrite-settings: true
+
+  # testConnectivity:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Test connectivity to SonarQube
+  #       run: |
+  #         curl -v ${{ secrets.SONAR_HOST_URL }}
 
       # - name: SonarQube Scan
       #   env:
